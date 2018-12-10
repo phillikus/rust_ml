@@ -1,0 +1,10 @@
+[package]
+name = "rust_ml"
+version = "0.1.0"
+authors = ["Philipp <pengelmann92@googlemail.com>"]
+
+[lib]
+name = "linear_regression"
+path = "src/lib.rs"
+
+[dependencies]
