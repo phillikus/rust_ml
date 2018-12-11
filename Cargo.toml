@@ -8,3 +8,4 @@ name = "linear_regression"
 path = "src/lib.rs"
 
 [dependencies]
+dataplotlib = "0.1.3"
