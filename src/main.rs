@@ -1,9 +1,11 @@
-extern crate dataplotlib;
 extern crate linear_regression;
+extern crate plotlib;
 
-use dataplotlib::util::{linspace, zip2};
-use dataplotlib::plotbuilder::PlotBuilder2D;
-use dataplotlib::plotter::Plotter;
+use plotlib::scatter::Scatter;
+use plotlib::scatter;
+use plotlib::style::{Marker, Point};
+use plotlib::view::View;
+use plotlib::page::Page;
 
 pub fn main() {
     let mut model = linear_regression::LinearRegression::new();
@@ -15,13 +17,36 @@ pub fn main() {
     let accuracy = model.evaluate(&x_values, &y_values);
     println!("Accuracy: {0}", accuracy);
 
-    let mut pb = PlotBuilder2D::new();
-    let x_values_f64 = x_values.into_iter().map(|x| x as f64).collect();
-    let y_values_f64 = y_values.into_iter().map(|x| x as f64).collect();
+    let y_prediction : Vec<f32> = model.predict_list(&x_values);
+    let y_prediction_f64 : Vec<f64> = y_prediction.into_iter().map(|x| x as f64).collect();
 
-    pb.add_color_xy(zip2(&x_values_f64, &y_values_f64), [1.0, 0.0, 0.0, 1.0]);
+    let x_values_f64 : Vec<f64> = x_values.into_iter().map(|x| x as f64).collect();
+    let y_values_f64 : Vec<f64> = y_values.into_iter().map(|x| x as f64).collect();    
     
-    let mut plt = Plotter::new();
-    plt.plot2d(pb);
-    plt.join();
+    let mut actual : Vec<(f64, f64)> = Vec::new();
+    let mut prediction : Vec<(f64, f64)> = Vec::new();
+
+    for i in 0..x_values_f64.len() {
+        actual.push((x_values_f64[i], y_values_f64[i]));
+        prediction.push((x_values_f64[i], y_prediction_f64[i]));
+    }
+
+    let plot_actual = Scatter::from_vec(&actual)
+        .style(scatter::Style::new()
+            .colour("#35C788"));
+
+    let plot_prediction = Scatter::from_vec(&prediction)
+        .style(scatter::Style::new()
+            .marker(Marker::Square) // setting the marker to be a square
+            .colour("#DD3355"));    
+
+    let v = View::new()
+        .add(&plot_actual)
+        .add(&plot_prediction)
+        .x_range(-0., 6.)
+        .y_range(0., 6.)
+        .x_label("x")
+        .y_label("y");
+
+    Page::single(&v).save("scatter.svg");
 }

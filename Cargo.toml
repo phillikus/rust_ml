@@ -8,4 +8,5 @@ name = "linear_regression"
 path = "src/lib.rs"
 
 [dependencies]
-dataplotlib = "0.1.3"
+rustplot = "0.1.0"
+plotlib = "0.3.0"

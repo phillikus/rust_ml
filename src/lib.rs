@@ -60,7 +60,7 @@ impl LinearRegression {
         let length = actual.len();
 
         for i in 0..length {
-            sum_error += f32::powf((predicted[i] - actual[i]), 2f32);
+            sum_error += f32::powf(predicted[i] - actual[i], 2f32);
         }
 
         let mean_error = sum_error / length as f32;
