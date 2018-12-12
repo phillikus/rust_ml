@@ -1,5 +1,7 @@
-extern crate linear_regression;
+extern crate ml_models;
 extern crate plotlib;
+
+use ml_models::regression::linear_regression;
 
 use plotlib::scatter::Scatter;
 use plotlib::scatter;

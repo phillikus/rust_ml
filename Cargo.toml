@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Philipp <pengelmann92@googlemail.com>"]
 
 [lib]
-name = "linear_regression"
+name = "ml_models"
 path = "src/lib.rs"
 
 [dependencies]
