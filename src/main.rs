@@ -13,11 +13,11 @@ pub fn main() {
     let mut model = linear_regression::LinearRegression::new();
     let x_values = vec![1f32, 2f32, 3f32, 4f32, 5f32];
     let y_values = vec![1f32, 3f32, 2f32, 3f32, 5f32];
-
     model.fit(&x_values, &y_values);
-
-    let accuracy = model.evaluate(&x_values, &y_values);
-    println!("Accuracy: {0}", accuracy);
+    
+    println!("Coefficient: {0}", model.coefficient.unwrap());
+    println!("Intercept: {0}", model.intercept.unwrap());
+    println!("Accuracy: {0}", model.evaluate(&x_values, &y_values));
 
     let y_prediction : Vec<f32> = model.predict_list(&x_values);
     let y_prediction_f64 : Vec<f64> = y_prediction.into_iter().map(|x| x as f64).collect();
@@ -39,7 +39,7 @@ pub fn main() {
 
     let plot_prediction = Scatter::from_vec(&prediction)
         .style(scatter::Style::new()
-            .marker(Marker::Square) // setting the marker to be a square
+            .marker(Marker::Square)
             .colour("#DD3355"));    
 
     let v = View::new()

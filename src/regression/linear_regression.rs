@@ -1,8 +1,8 @@
 use utils::stat;
 
 pub struct LinearRegression {
-    coefficient: Option<f32>,
-    intercept: Option<f32>
+    pub coefficient: Option<f32>,
+    pub intercept: Option<f32>
 }
 
 impl LinearRegression {
@@ -16,17 +16,7 @@ impl LinearRegression {
 
         self.intercept = Some(b0);
         self.coefficient = Some(b1);       
-    }
-
-    pub fn predict_list(&self, x_values : &Vec<f32>) -> Vec<f32> {
-        let mut predictions = Vec::new();
-
-        for i in 0..x_values.len() {
-            predictions.push(self.predict(x_values[i]));
-        }
-
-        return predictions;
-    }
+    }   
 
     pub fn predict(&self, x : f32) -> f32 {
         if self.coefficient.is_none() || self.intercept.is_none() {
@@ -39,18 +29,22 @@ impl LinearRegression {
         return b0 + b1 * x;
     }
 
+    pub fn predict_list(&self, x_values : &Vec<f32>) -> Vec<f32> {
+        let mut predictions = Vec::new();
+
+        for i in 0..x_values.len() {
+            predictions.push(self.predict(x_values[i]));
+        }
+
+        return predictions;
+    }
+
     pub fn evaluate(&self, x_test : &Vec<f32>, y_test: &Vec<f32>) -> f32 {
         if self.coefficient.is_none() || self.intercept.is_none() {
             panic!("fit(..) must be called first");
         }
 
-        let mut y_predicted = Vec::new();
-        let length = x_test.len();
-
-        for i in 0..length {
-            y_predicted.push(self.predict(x_test[i]));
-        }
-
+        let y_predicted = self.predict_list(x_test);
         return self.root_mean_squared_error(y_test, &y_predicted);
     }
 
