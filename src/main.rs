@@ -2,6 +2,7 @@ extern crate ml_models;
 extern crate plotlib;
 
 use ml_models::regression::linear_regression;
+use ml_models::gradient_descent::gradient_descent;
 
 use plotlib::scatter::Scatter;
 use plotlib::scatter;
@@ -13,7 +14,16 @@ pub fn main() {
     let mut model = linear_regression::LinearRegression::new();
     let x_values = vec![1f32, 2f32, 3f32, 4f32, 5f32];
     let y_values = vec![1f32, 3f32, 2f32, 3f32, 5f32];
+
+    let tuple = gradient_descent::linear_regression(&x_values, &y_values, 10000, 0.005);
+
+    let intercept = tuple.0;
+    let coefficient = tuple.1;
+
     model.fit(&x_values, &y_values);
+
+    let coefficient1 = model.coefficient;
+    let intercept1 = model.intercept;
     
     println!("Coefficient: {0}", model.coefficient.unwrap());
     println!("Intercept: {0}", model.intercept.unwrap());
